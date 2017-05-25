@@ -1,0 +1,5 @@
+name: Exam module
+type: module
+description: Exam module
+core: 8.x
+package: Custom

@@ -1,0 +1,7 @@
+demo_test.page:
+  path: '/page_json/{siteapikey}/{nid}'
+  defaults:
+    _controller: '\Drupal\demo_test\Controller\DemoTestController::content'
+    _title: 'Page access'
+  requirements:
+    _permission: 'access content'

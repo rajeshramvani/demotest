@@ -1,0 +1,39 @@
+<?php
+/**
+ * Implements hook_form_alter().
+ *   
+*/
+
+function demo_test_form_alter(&$form, &$form_state, $form_id) {
+	
+	$site_api_key = \Drupal::config('demo_test.settings')->get('demo_test.siteapikey'); //get default api key value
+	
+	if($form_id=="system_site_information_settings") {
+		
+		$form['site_information']['siteapikey'] = array(
+	      	'#type' => 'textfield',
+	      	'#title' => t('Site API Key'),
+	       	'#default_value' =>$site_api_key,
+	    	);
+		
+		// update value of button
+		$form['actions']['submit']['#value'] = t("Update Configuration");
+		
+	    // call custom action to store siteapikey value
+		$form['actions']['submit']['#submit'][] = 'demo_test_siteapikey_submit'; 
+	}
+}
+/*
+ * Call back submit action to store siteapikey value
+ * 
+ */
+function demo_test_siteapikey_submit($form,&$form_state) 
+{
+	$config = \Drupal::configFactory()->getEditable('demo_test.settings');
+
+	// Set and save new api key value.
+	$config->set('demo_test.siteapikey', $form_state->getValue('siteapikey'))->save();
+	
+	//display proper message
+	drupal_set_message(t('Site API Key has been saved with that value'), 'status', TRUE);
+}
